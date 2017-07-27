@@ -26,6 +26,7 @@ package com.fenbi.ytklearn.feature.gbdt.approximate.sampler;
 import com.fenbi.ytklearn.dataflow.GBDTCoreData;
 import com.fenbi.mp4j.comm.ThreadCommSlave;
 import com.fenbi.ytklearn.utils.NumConvertUtils;
+import org.apache.commons.math3.analysis.function.Abs;
 
 import java.util.HashSet;
 
@@ -34,7 +35,7 @@ import java.util.HashSet;
  * @author xialong
  */
 
-public class NoSample implements ISampler {
+public class NoSample extends AbstractSampler {
 
     public NoSample(ThreadCommSlave comm) {
 

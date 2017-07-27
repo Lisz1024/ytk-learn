@@ -20,46 +20,18 @@
  * SOFTWARE.
  */
 
-package com.fenbi.ytklearn.feature.gbdt.approximate.normlization;
+package com.fenbi.ytklearn.optimizer.gbdt;
 
-import com.fenbi.ytklearn.utils.CheckUtils;
+import com.fenbi.mp4j.exception.Mp4jException;
+import com.fenbi.ytklearn.data.gbdt.TimeStats;
+import com.fenbi.ytklearn.data.gbdt.Tree;
 
 /**
- * convert value to value + min(all values), then log(1+value)
  * @author wufan
- * @author xialong
  */
 
-public class PosLogNorm extends AbstractNormalization {
-
-    private float minV;
-    private boolean initialized;
-
-    public PosLogNorm() {
-        minV = 0.0f;
-        initialized = false;
-    }
-
-    private boolean initialized() {
-        return initialized;
-    }
-
-    @Override
-    public void init(float[] info) {
-        CheckUtils.check(info != null && info.length == 1, "pos log(1+x) norm init param error!");
-        minV = Math.min(info[0], 0.f);
-        initialized = true;
-    }
-
-    @Override
-    public float normalization(float origin) {
-        CheckUtils.check(initialized(), "pos log(1+x) not initialized!");
-        return (float) Math.log(1 + origin - minV);
-    }
-
-    @Override
-    public float inverseTransform(float origin) {
-        CheckUtils.check(initialized(), "pos log(1+x) not initialized!");
-        return (float) (Math.exp(origin) + minV - 1);
+public abstract class AbstractITreeMaker implements ITreeMaker {
+    public TimeStats getTotalTimeStats() {
+        return null;
     }
 }

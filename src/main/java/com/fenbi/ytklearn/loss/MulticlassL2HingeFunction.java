@@ -27,7 +27,7 @@ package com.fenbi.ytklearn.loss;
  * @author xialong
  */
 
-public class MulticlassL2HingeFunction implements ILossFunction {
+public class MulticlassL2HingeFunction extends AbstractLossFunction {
     private int target(double []label) {
         int target = -1;
         for (int i = 0; i < label.length; i++) {

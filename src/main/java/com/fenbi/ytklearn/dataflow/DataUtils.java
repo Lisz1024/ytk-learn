@@ -23,6 +23,7 @@
 
 package com.fenbi.ytklearn.dataflow;
 
+import com.fenbi.ytklearn.utils.MyFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.hadoop.conf.Configuration;
@@ -204,7 +205,7 @@ public class DataUtils {
         return assign;
     }
 
-    public static <T, R> void travel(Function<T, R> func, List<Iterator<T>> iterators) {
+    public static <T, R> void travel(MyFunction<T, R> func, List<Iterator<T>> iterators) {
         for (Iterator<T> it : iterators) {
             while(it.hasNext()) {
                 func.apply(it.next());

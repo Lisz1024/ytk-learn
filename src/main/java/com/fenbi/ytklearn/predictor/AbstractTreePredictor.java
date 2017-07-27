@@ -20,46 +20,26 @@
  * SOFTWARE.
  */
 
-package com.fenbi.ytklearn.feature.gbdt.approximate.normlization;
+package com.fenbi.ytklearn.predictor;
 
-import com.fenbi.ytklearn.utils.CheckUtils;
+import java.util.Map;
 
 /**
- * convert value to value + min(all values), then log(1+value)
- * @author wufan
  * @author xialong
  */
 
-public class PosLogNorm extends AbstractNormalization {
+public abstract class AbstractTreePredictor implements ITreePredictor {
 
-    private float minV;
-    private boolean initialized;
-
-    public PosLogNorm() {
-        minV = 0.0f;
-        initialized = false;
+    public String leafFeatures(Map<String, Float> features, String featuresDelim, String featureNameValueDelim) {
+        double[] leaf = predictLeaf(features);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < leaf.length; i++) {
+            sb.append("tree_leaf_").append(i).append(featureNameValueDelim).append(leaf[i]);
+            if (i < leaf.length - 1) {
+                sb.append(featuresDelim);
+            }
+        }
+        return sb.toString();
     }
 
-    private boolean initialized() {
-        return initialized;
-    }
-
-    @Override
-    public void init(float[] info) {
-        CheckUtils.check(info != null && info.length == 1, "pos log(1+x) norm init param error!");
-        minV = Math.min(info[0], 0.f);
-        initialized = true;
-    }
-
-    @Override
-    public float normalization(float origin) {
-        CheckUtils.check(initialized(), "pos log(1+x) not initialized!");
-        return (float) Math.log(1 + origin - minV);
-    }
-
-    @Override
-    public float inverseTransform(float origin) {
-        CheckUtils.check(initialized(), "pos log(1+x) not initialized!");
-        return (float) (Math.exp(origin) + minV - 1);
-    }
 }

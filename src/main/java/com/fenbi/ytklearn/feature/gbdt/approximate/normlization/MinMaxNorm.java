@@ -25,13 +25,15 @@ package com.fenbi.ytklearn.feature.gbdt.approximate.normlization;
 
 import com.fenbi.ytklearn.exception.YtkLearnException;
 import com.fenbi.ytklearn.utils.CheckUtils;
+import org.apache.commons.math3.analysis.function.Abs;
+import org.apache.commons.math3.optim.AbstractConvergenceChecker;
 
 /**
  * @author wufan
  * @author xialong
  */
 
-public class MinMaxNorm implements INormalization {
+public class MinMaxNorm extends AbstractNormalization {
 
     private float minV;
     private float maxV;

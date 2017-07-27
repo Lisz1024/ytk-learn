@@ -27,7 +27,7 @@ package com.fenbi.ytklearn.loss;
  * @author xialong
  */
 
-public class HuberFunction implements ILossFunction {
+public class HuberFunction extends AbstractLossFunction {
     private final double delta;
     public HuberFunction(double delta) {
         this.delta = delta;

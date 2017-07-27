@@ -71,9 +71,7 @@ public interface ILossFunction {
      * @param pred Prediction
      * @return score value
      */
-    default public double pred2Score(double pred) {
-        return pred;
-    }
+    public double pred2Score(double pred);
 
     /**
      * Calculates loss value provided with multi scores and labels.
@@ -89,9 +87,7 @@ public interface ILossFunction {
      *        The label of sample
      * @return loss
      */
-    default public double loss(double[] score, double[] label) {
-        return -1;
-    }
+    public double loss(double[] score, double[] label);
 
     /**
      * Calculates prediction of multi-classification:
@@ -106,7 +102,7 @@ public interface ILossFunction {
      * @param pred
      *        Output of prediction results
      */
-    default public void predict(double []score, double[] pred) {}
+    public void predict(double []score, double[] pred);
 
     /**
      * Calculates first derivative of loss versus score.
@@ -129,32 +125,25 @@ public interface ILossFunction {
      */
     public double secondDerivative(double score, double label);
 
-    default public void getDerivativeFast(double pred, double label, double[] deri) {
-        deri[0] = firstDerivative(pred, label);
-        deri[1] = secondDerivative(pred, label);
-    }
+    public void getDerivativeFast(double pred, double label, double[] deri);
 
-    default public void getDerivativeFast(double []pred, double []label, double[] firstDeri, double[] secondDeri) {}
+    public void getDerivativeFast(double []pred, double []label, double[] firstDeri, double[] secondDeri);
 
-    default public void firstDerivative(double []score, double []label, double[] firstDeri) {}
-    default public void secondDerivative(double []score, double []label, double[] secondDeri) {}
+    public void firstDerivative(double []score, double []label, double[] firstDeri);
+    public void secondDerivative(double []score, double []label, double[] secondDeri);
 
-    default public double all(double []score,
+    public double all(double []score,
                               double []label,
                               double []predict,
                               double []firstDeri,
                               double []secondDeri
-                              ) {return -1;}
-    default public boolean checkLabel(float label) {
-        return true;
-    }
+                              );
 
-    default public boolean checkLabel(float[] label) {
-        return true;
-    }
+    public boolean checkLabel(float label);
 
-    default public void setParam(Map<String, String> params) {
-    }
+    public boolean checkLabel(float[] label);
+
+    public void setParam(Map<String, String> params);
 
     public String getName();
 }

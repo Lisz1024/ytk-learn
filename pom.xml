@@ -155,8 +155,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.3</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
@@ -278,7 +278,7 @@
                             <dependency>
                                 <groupId>sun.jdk</groupId>
                                 <artifactId>tools</artifactId>
-                                <version>1.8</version>
+                                <version>1.7</version>
                                 <scope>system</scope>
                                 <systemPath>${java.home}/../lib/tools.jar</systemPath>
                             </dependency>

@@ -27,7 +27,7 @@ package com.fenbi.ytklearn.loss;
  * @author xialong
  */
 
-public class MAPEFunction implements ILossFunction {
+public class MAPEFunction extends AbstractLossFunction {
     @Override
     public final double loss(double score, double label) {
         return Math.abs((label - score) / label);

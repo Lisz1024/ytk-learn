@@ -43,7 +43,7 @@ import java.util.Map;
  */
 
 @Data
-public abstract class OnlinePredictor {
+public abstract class OnlinePredictor extends AbstractTreePredictor {
     public static final Logger LOG = LoggerFactory.getLogger(OnlinePredictor.class);
     protected Config config;
     protected IFileSystem fs;

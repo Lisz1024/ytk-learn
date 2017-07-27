@@ -27,7 +27,7 @@ package com.fenbi.ytklearn.loss;
  * @author xialong
  */
 
-public class ExponentialFunction implements ILossFunction {
+public class ExponentialFunction extends AbstractLossFunction {
     public final static double MAX_EXP = 8;
     @Override
     public final double loss(double score, double label) {

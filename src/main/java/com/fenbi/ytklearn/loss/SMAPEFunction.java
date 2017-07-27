@@ -27,7 +27,7 @@ package com.fenbi.ytklearn.loss;
  * @author xialong
  */
 
-public class SMAPEFunction implements ILossFunction {
+public class SMAPEFunction extends AbstractLossFunction {
     private final static double MIN_SCORE = 1e-6;
 
     @Override

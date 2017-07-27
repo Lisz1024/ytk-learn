@@ -27,7 +27,7 @@ package com.fenbi.ytklearn.loss;
  * @author xialong
  */
 
-public class MulticlassSmoothHingeFunction implements ILossFunction {
+public class MulticlassSmoothHingeFunction extends AbstractLossFunction {
 
     private int target(double []label) {
         int target = -1;

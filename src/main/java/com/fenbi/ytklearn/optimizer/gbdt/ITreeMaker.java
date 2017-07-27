@@ -32,8 +32,6 @@ import com.fenbi.ytklearn.data.gbdt.TimeStats;
  */
 
 public interface ITreeMaker {
-
     public Tree make(int groupId) throws Mp4jException;
-
-    default public TimeStats getTotalTimeStats() { return null;}
+    public TimeStats getTotalTimeStats();
 }

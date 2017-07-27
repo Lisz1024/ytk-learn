@@ -27,7 +27,7 @@ package com.fenbi.ytklearn.loss;
  * @author xialong
  */
 
-public class SoftmaxFunction implements ILossFunction {
+public class SoftmaxFunction extends AbstractLossFunction {
 
     @Override
     public double loss(double score, double label) {

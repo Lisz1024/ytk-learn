@@ -27,7 +27,7 @@ package com.fenbi.ytklearn.loss;
  * @author xialong
  */
 
-public class HingeFunction implements ILossFunction {
+public class HingeFunction extends AbstractLossFunction {
 
     @Override
     public final double loss(double score, double label) {

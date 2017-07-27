@@ -419,4 +419,9 @@ public abstract class ContinuousOnlinePredictor<T> extends OnlinePredictor {
         LOG.info("predict complete!");
         return hasLabel ? loss : Double.NaN;
     }
+
+    @Override
+    public double[] predictLeaf(Map<String, Float> features) {
+        return null;
+    }
 }

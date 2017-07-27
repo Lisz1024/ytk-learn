@@ -20,46 +20,32 @@
  * SOFTWARE.
  */
 
-package com.fenbi.ytklearn.feature.gbdt.approximate.normlization;
+package com.fenbi.ytklearn.feature.gbdt.approximate.sampler;
 
-import com.fenbi.ytklearn.utils.CheckUtils;
+import com.fenbi.ytklearn.dataflow.GBDTCoreData;
+
+import java.util.Map;
+import java.util.Set;
 
 /**
- * convert value to value + min(all values), then log(1+value)
+ * interface of feature approximation
  * @author wufan
  * @author xialong
  */
 
-public class PosLogNorm extends AbstractNormalization {
+public abstract class AbstractSampler implements ISampler {
 
-    private float minV;
-    private boolean initialized;
-
-    public PosLogNorm() {
-        minV = 0.0f;
-        initialized = false;
+    public void init(Map<String, String> params) {
     }
 
-    private boolean initialized() {
-        return initialized;
+    // called by sample_by_quantile
+    public Set<Float> getSamples(Object o) {
+        return null;
     }
 
-    @Override
-    public void init(float[] info) {
-        CheckUtils.check(info != null && info.length == 1, "pos log(1+x) norm init param error!");
-        minV = Math.min(info[0], 0.f);
-        initialized = true;
+    // revert value to original value scale, only need to be implemented in SampleByPrecision
+    public float inverseTransform(float data) {
+        return data;
     }
 
-    @Override
-    public float normalization(float origin) {
-        CheckUtils.check(initialized(), "pos log(1+x) not initialized!");
-        return (float) Math.log(1 + origin - minV);
-    }
-
-    @Override
-    public float inverseTransform(float origin) {
-        CheckUtils.check(initialized(), "pos log(1+x) not initialized!");
-        return (float) (Math.exp(origin) + minV - 1);
-    }
 }

@@ -36,7 +36,7 @@ import java.util.*;
  */
 
 @Data
-public class GBMLROnlinePredictor extends ContinuousOnlinePredictor<float[]> implements ITreePredictor {
+public class GBMLROnlinePredictor extends ContinuousOnlinePredictor<float[]> {
     protected final int K;
     protected final float uniformBaseScore;
     protected final boolean sampleDepdtBaseScore;

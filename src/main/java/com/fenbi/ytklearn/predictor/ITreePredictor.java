@@ -39,16 +39,6 @@ public interface ITreePredictor {
      */
     double[] predictLeaf(Map<String, Float> features);
 
-    default String leafFeatures(Map<String, Float> features, String featuresDelim, String featureNameValueDelim) {
-        double []leaf = predictLeaf(features);
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < leaf.length; i++) {
-            sb.append("tree_leaf_").append(i).append(featureNameValueDelim).append(leaf[i]);
-            if (i < leaf.length - 1) {
-                sb.append(featuresDelim);
-            }
-        }
-        return sb.toString();
-    }
+    public String leafFeatures(Map<String, Float> features, String featuresDelim, String featureNameValueDelim);
 
 }

@@ -175,6 +175,10 @@ public abstract class DataFlow {
             }
             return null;
         }
+
+        @Override
+        public void remove() {
+        }
     }
 
     public DataFlow(IFileSystem fs,
@@ -477,7 +481,7 @@ public abstract class DataFlow {
         loadDict();
 
         LOG_UTILS.importantInfo("#########read train data############");
-        List<Iterator<String>> trainDataNow = trainData != null ? trainData :
+        final List<Iterator<String>> trainDataNow = trainData != null ? trainData :
                 getAssignedDatas(coreParams.train_data_path);
         // just read train data thread
         Thread trainReadThread = new Thread() {
@@ -638,7 +642,7 @@ public abstract class DataFlow {
 
             // read test data
             LOG_UTILS.importantInfo("#########read test data############");
-            List<Iterator<String>> testDataNow = testData != null ? testData :
+            final List<Iterator<String>> testDataNow = testData != null ? testData :
                     getAssignedDatas(coreParams.test_data_path);
 
             // just read test data thread

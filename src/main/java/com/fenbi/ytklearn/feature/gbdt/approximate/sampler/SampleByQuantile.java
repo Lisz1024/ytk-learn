@@ -30,6 +30,7 @@ import com.fenbi.ytklearn.data.Constants;
 import com.fenbi.ytklearn.dataflow.GBDTCoreData;
 import com.fenbi.ytklearn.utils.NumConvertUtils;
 import com.fenbi.ytklearn.utils.WeightApproximateQuantile;
+import org.apache.commons.math3.analysis.function.Abs;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -41,7 +42,7 @@ import java.util.Set;
  * @author xialong
  */
 
-public class SampleByQuantile implements ISampler {
+public class SampleByQuantile extends AbstractSampler {
 
     private ThreadCommSlave comm;
 
@@ -64,6 +65,7 @@ public class SampleByQuantile implements ISampler {
         alpha = Double.parseDouble(params.get("alpha"));
     }
 
+    @Override
     public Object doSample(GBDTCoreData data, int fid) throws Exception {
         Map<Float, Double> feaValCnt = new HashMap<>(Constants.RESERVE_NUM);
         if (useSampleWeight) {

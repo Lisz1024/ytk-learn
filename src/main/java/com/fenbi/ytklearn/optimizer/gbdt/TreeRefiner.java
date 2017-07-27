@@ -76,7 +76,7 @@ public class TreeRefiner {
         List<Integer> leafIndex = tree.getLeafNodes();
         leaf2SampleIndex = new HashMap<>(leafIndex.size());
         for (int leaf : leafIndex) {
-            leaf2SampleIndex.put(leaf, new ArrayList<>());
+            leaf2SampleIndex.put(leaf, new ArrayList<Integer>());
         }
 
         for (int i = xRowRange[0]; i < xRowRange[1]; i++) {

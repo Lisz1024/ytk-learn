@@ -27,7 +27,7 @@ package com.fenbi.ytklearn.loss;
  * @author xialong
  */
 
-public class SmoothHingeFunction implements ILossFunction {
+public class SmoothHingeFunction extends AbstractLossFunction {
     @Override
     public final double loss(double score, double label) {
         double z = (2 * label - 1.0) * score;

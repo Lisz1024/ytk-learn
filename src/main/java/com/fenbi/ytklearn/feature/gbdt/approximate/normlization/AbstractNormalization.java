@@ -22,44 +22,20 @@
 
 package com.fenbi.ytklearn.feature.gbdt.approximate.normlization;
 
-import com.fenbi.ytklearn.utils.CheckUtils;
-
 /**
- * convert value to value + min(all values), then log(1+value)
+ * each feature col has it's own normalizer
  * @author wufan
  * @author xialong
  */
 
-public class PosLogNorm extends AbstractNormalization {
+public abstract class AbstractNormalization implements INormalization {
 
-    private float minV;
-    private boolean initialized;
-
-    public PosLogNorm() {
-        minV = 0.0f;
-        initialized = false;
-    }
-
-    private boolean initialized() {
-        return initialized;
-    }
-
-    @Override
+    // set meta data, eg: min-max, min...
     public void init(float[] info) {
-        CheckUtils.check(info != null && info.length == 1, "pos log(1+x) norm init param error!");
-        minV = Math.min(info[0], 0.f);
-        initialized = true;
     }
 
-    @Override
-    public float normalization(float origin) {
-        CheckUtils.check(initialized(), "pos log(1+x) not initialized!");
-        return (float) Math.log(1 + origin - minV);
+    // param setting, eg: dot_precistion
+    public void setParam(String key, String val) {
     }
 
-    @Override
-    public float inverseTransform(float origin) {
-        CheckUtils.check(initialized(), "pos log(1+x) not initialized!");
-        return (float) (Math.exp(origin) + minV - 1);
-    }
 }

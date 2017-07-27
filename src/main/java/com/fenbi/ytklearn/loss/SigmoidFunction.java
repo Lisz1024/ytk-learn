@@ -31,7 +31,7 @@ import java.util.Map;
  * @author xialong
  */
 
-public final class SigmoidFunction implements ILossFunction {
+public final class SigmoidFunction extends AbstractLossFunction {
     private double zMax = 0;
     private double negZMax = 0;
 

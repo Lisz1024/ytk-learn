@@ -45,7 +45,7 @@ import java.util.*;
  * @author xialong
  */
 
-public class FeatureParallelTreeMakerByLevel implements ITreeMaker {
+public class FeatureParallelTreeMakerByLevel extends AbstractITreeMaker {
 
     // statistics for node entry, used for tree construction
     private class TreeMakerNodeStats {

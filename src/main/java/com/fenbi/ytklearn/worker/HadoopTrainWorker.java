@@ -1,25 +1,24 @@
 /**
-*
-* Copyright (c) 2017 ytk-learn https://github.com/yuantiku
-*
-* Permission is hereby granted, free of charge, to any person obtaining a copy
-* of this software and associated documentation files (the "Software"), to deal
-* in the Software without restriction, including without limitation the rights
-* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-* copies of the Software, and to permit persons to whom the Software is
-* furnished to do so, subject to the following conditions:
-
-* The above copyright notice and this permission notice shall be included in all
-* copies or substantial portions of the Software.
-
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-* SOFTWARE.
-*/
+ * Copyright (c) 2017 ytk-learn https://github.com/yuantiku
+ * <p>
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * <p>
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * <p>
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 
 package com.fenbi.ytklearn.worker;
 
@@ -90,7 +89,7 @@ public class HadoopTrainWorker extends TrainWorker {
 
         conf.set("mapreduce.job.queuename", hadoopQueueName);
         conf.set("mapreduce.reduce.memory.mb", hadoopReduceMemory);
-        conf.set("mapreduce.reduce.java.opts", "-Xmx" + ((int)((Integer.parseInt(hadoopReduceMemory) * 0.9))) + "m");
+        conf.set("mapreduce.reduce.java.opts", "-Xmx" + ((int) ((Integer.parseInt(hadoopReduceMemory) * 0.9))) + "m");
         conf.set("yarn.app.mapreduce.am.resource.mb", "" + threadNum);
         conf.set("mapreduce.reduce.cpu.vcores", "" + threadNum);
     }
@@ -107,7 +106,7 @@ public class HadoopTrainWorker extends TrainWorker {
     public static Map<String, Object> decodeMap(String info) throws Exception {
         info = URLDecoder.decode(info, "UTF-8");
         ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(info.getBytes("ISO-8859-1")));
-        Map<String, Object> map = (Map<String, Object>)ois.readObject();
+        Map<String, Object> map = (Map<String, Object>) ois.readObject();
         ois.close();
         return map;
     }
@@ -178,6 +177,7 @@ public class HadoopTrainWorker extends TrainWorker {
 
     public static class TrainMapper extends Mapper<Object, Text, Text, Text> {
         Random rand = new Random();
+
         @Override
         protected void map(Object key, Text value, Context context) throws IOException, InterruptedException {
             context.write(new Text(rand.nextInt(100000) + ""), value);
@@ -195,7 +195,7 @@ public class HadoopTrainWorker extends TrainWorker {
 
             @Override
             public boolean hasNext() {
-                while(!finished) {
+                while (!finished) {
                     if (trainDataQueue.size() > 0) {
                         return true;
                     }
@@ -215,11 +215,15 @@ public class HadoopTrainWorker extends TrainWorker {
                 }
                 return null;
             }
+
+            @Override
+            public void remove() {
+            }
         }
 
         @Override
         protected void setup(Context context) {
-            Configuration conf = context.getConfiguration();
+            final Configuration conf = context.getConfiguration();
             workThread = new Thread() {
                 @Override
                 public void run() {
@@ -235,16 +239,13 @@ public class HadoopTrainWorker extends TrainWorker {
                                 conf.get("hostName"),
                                 conf.getInt("hostPort", -1),
                                 conf.getInt("threadNum", -1)
-                                );
-
+                        );
                         Map<String, Object> customParamsMap = decodeMap(conf.get("customParamsMap"));
-
                         for (Map.Entry<String, Object> entry : customParamsMap.entrySet()) {
                             trainWorkerCore.setCustomParam(entry.getKey(), entry.getValue());
                             LOG.info("hadoop custom params:" + entry.getKey() + "=" + entry.getValue());
                         }
-
-                        trainWorkerCore.train(Arrays.asList(new ReducerIterator()), null);
+                        trainWorkerCore.train(Arrays.asList((Iterator<String>) (new ReducerIterator())), null);
                     } catch (Exception e) {
                         e.printStackTrace();
                         System.exit(1);
@@ -268,7 +269,7 @@ public class HadoopTrainWorker extends TrainWorker {
             while (it.hasNext()) {
                 String val = it.next().toString();
                 trainDataQueue.put(val);
-                putcnt ++;
+                putcnt++;
             }
         }
     }

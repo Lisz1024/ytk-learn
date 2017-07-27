@@ -1,25 +1,24 @@
 /**
-*
-* Copyright (c) 2017 ytk-learn https://github.com/yuantiku
-*
-* Permission is hereby granted, free of charge, to any person obtaining a copy
-* of this software and associated documentation files (the "Software"), to deal
-* in the Software without restriction, including without limitation the rights
-* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-* copies of the Software, and to permit persons to whom the Software is
-* furnished to do so, subject to the following conditions:
-
-* The above copyright notice and this permission notice shall be included in all
-* copies or substantial portions of the Software.
-
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-* SOFTWARE.
-*/
+ * Copyright (c) 2017 ytk-learn https://github.com/yuantiku
+ * <p>
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * <p>
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * <p>
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 
 package com.fenbi.ytklearn.optimizer.gbdt;
 
@@ -46,7 +45,7 @@ import java.util.*;
  * @author xialong
  */
 
-public class DataParallelTreeMaker implements ITreeMaker {
+public class DataParallelTreeMaker extends AbstractITreeMaker {
 
     // statics for node entry, used for tree construction
     private static class TreeMakerNodeStats {
@@ -102,17 +101,35 @@ public class DataParallelTreeMaker implements ITreeMaker {
     }
 
     // compare by lossChg, loss-wise growing(large lossChg first)
-    private static Comparator<ExpandNode> lossChgComparator = (n1, n2) -> {
+    /*private static Comparator<ExpandNode> lossChgComparator = (n1, n2) -> {
         int res = Float.compare(n2.lossChg, n1.lossChg);
         if (res != 0) {
             return res;
         } else {
             return Integer.compare(n1.seq, n2.seq);
         }
+    };*/
+
+    private static Comparator<ExpandNode> lossChgComparator = new Comparator<ExpandNode>() {
+        @Override
+        public int compare(ExpandNode n1, ExpandNode n2) {
+            int res = Float.compare(n2.lossChg, n1.lossChg);
+            if (res != 0) {
+                return res;
+            } else {
+                return Integer.compare(n1.seq, n2.seq);
+            }
+        }
     };
 
     // compare by sequenceId, level-wise growing
-    private static Comparator<ExpandNode> sequenceComparator = (n1, n2) -> Integer.compare(n1.seq, n2.seq);
+    // private static Comparator<ExpandNode> sequenceComparator = (n1, n2) -> Integer.compare(n1.seq, n2.seq);
+    private static Comparator<ExpandNode> sequenceComparator = new Comparator<ExpandNode>() {
+        @Override
+        public int compare(ExpandNode n1, ExpandNode n2) {
+            return Integer.compare(n1.seq, n2.seq);
+        }
+    };
 
     public LogUtils LOG_UTILS;
     private final ThreadCommSlave comm;
@@ -560,7 +577,7 @@ public class DataParallelTreeMaker implements ITreeMaker {
             gradStats = comm.allreduceArrayRpc(gradStats, Operands.DOUBLE_OPERAND(), Operators.Double.MAX);
             stats.sumGradStats.set(gradStats[0], gradStats[1]);
 
-              // may cause inconsistent
+            // may cause inconsistent
 //            int fid = trainData.xColRange[0];
 //            for (int i = 0; i < featureStartIndex[fid + 1] - featureStartIndex[fid]; i++) {
 //                stats.sumGradStats.add(globalGradSum, i);
@@ -639,7 +656,7 @@ public class DataParallelTreeMaker implements ITreeMaker {
     // sync best split result with other workers
     private void syncBestSplit(int nid) throws Mp4jException {
 //         SplitInfo splitInfo = comm.allreduce(nodeStats.get(nid).best, Operands.OBJECT_OPERAND(new SplitInfo.SplitInfoSerializer(), SplitInfo.class), new IObjectOperator<SplitInfo>() {
-         SplitInfo splitInfo = comm.allreduceRpc(nodeStats.get(nid).best, Operands.OBJECT_OPERAND(new SplitInfo.SplitInfoSerializer(), SplitInfo.class), new IObjectOperator<SplitInfo>() {
+        SplitInfo splitInfo = comm.allreduceRpc(nodeStats.get(nid).best, Operands.OBJECT_OPERAND(new SplitInfo.SplitInfoSerializer(), SplitInfo.class), new IObjectOperator<SplitInfo>() {
             @Override
             public SplitInfo apply(SplitInfo t1, SplitInfo t2) {
                 if (t1.needReplace(t2.getLossChg(), t2.getSplitIndex())) {

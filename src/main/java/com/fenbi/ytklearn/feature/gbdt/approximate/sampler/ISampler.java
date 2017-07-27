@@ -36,16 +36,16 @@ import java.util.Set;
 
 public interface ISampler {
 
-    default public void init(Map<String, String> params){}
+    public void init(Map<String, String> params);
 
     // sample_by_cnt, sample_by_rate, sample_by_precision, no_sample: return Set<Float>
     // sample_by_quantile: return WeightApproximateQuantile.Summary
     public Object doSample(GBDTCoreData data, int fid) throws Exception;
 
     // called by sample_by_quantile
-    default public Set<Float> getSamples(Object o) {return null; }
+    public Set<Float> getSamples(Object o);
 
     // revert value to original value scale, only need to be implemented in SampleByPrecision
-    default public float inverseTransform(float data) {return data; }
+    public float inverseTransform(float data);
 
 }

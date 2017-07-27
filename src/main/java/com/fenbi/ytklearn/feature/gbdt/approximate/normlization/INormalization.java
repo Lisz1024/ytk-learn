@@ -32,10 +32,10 @@ package com.fenbi.ytklearn.feature.gbdt.approximate.normlization;
 public interface INormalization {
 
     // set meta data, eg: min-max, min...
-    public default void init(float[] info) {}
+    public void init(float[] info);
 
     // param setting, eg: dot_precistion
-    public default void setParam(String key, String val) {}
+    public void setParam(String key, String val);
 
     public float normalization(float data);
 

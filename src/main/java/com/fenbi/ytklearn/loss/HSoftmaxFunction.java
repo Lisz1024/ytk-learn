@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
  * @author xialong
  */
 
-public class HSoftmaxFunction implements ILossFunction {
+public class HSoftmaxFunction extends AbstractLossFunction {
     public static final Logger LOG = LoggerFactory.getLogger(HSoftmaxFunction.class);
 
     private double []mu;

@@ -31,6 +31,7 @@ import com.fenbi.ytklearn.param.RandomParams;
 import com.fenbi.mp4j.exception.Mp4jException;
 import com.fenbi.mp4j.comm.ThreadCommSlave;
 import com.fenbi.ytklearn.utils.CheckUtils;
+import com.fenbi.ytklearn.utils.MyFunction;
 import com.fenbi.ytklearn.utils.RandomParamsUtils;
 import com.typesafe.config.Config;
 import lombok.Data;
@@ -232,9 +233,12 @@ public class FFMModelDataFlow extends ContinuousDataFlow {
         }
 
         CheckUtils.check(fs.exists(fieldDictPath), "ffm model must contain field dict, set model.field_dict_path");
-
-        DataUtils.travel(line -> field2IndexMap.put(line.trim(), field2IndexMap.size()),
-                fs.read(Arrays.asList(fieldDictPath)));
+        DataUtils.travel(new MyFunction<String, Object>() {
+            @Override
+            public Object apply(String line) {
+                return field2IndexMap.put(line.trim(), field2IndexMap.size());
+            }
+        }, fs.read(Arrays.asList(fieldDictPath)));
 
         fieldSize = field2IndexMap.size();
         LOG_UTILS.importantInfo("field dict size:" + fieldSize + "\n" +

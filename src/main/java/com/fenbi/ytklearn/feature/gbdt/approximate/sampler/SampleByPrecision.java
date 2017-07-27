@@ -38,7 +38,7 @@ import java.util.*;
  * @author xialong
  */
 
-public class SampleByPrecision implements ISampler {
+public class SampleByPrecision extends AbstractSampler {
 
     private int dotPrecision;
     private boolean useLog;

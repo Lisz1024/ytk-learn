@@ -27,7 +27,7 @@ package com.fenbi.ytklearn.loss;
  * @author xialong
  */
 
-public class PoissonFunction implements ILossFunction {
+public class PoissonFunction extends AbstractLossFunction {
     public final static double MAX_EXP = 30;
     public final static int yRange = 1000000;
     public final static double []logy = new double[yRange];

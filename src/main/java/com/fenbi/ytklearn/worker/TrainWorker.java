@@ -152,14 +152,14 @@ public class TrainWorker implements Serializable {
 
             IFileSystem fs = FileSystemFactory.createFileSystem(new URI(uri));
 
-            DataFlow dataFlow = DataFlowFactory.createDataFlow(modelName, fs, config,
+            final DataFlow dataFlow = DataFlowFactory.createDataFlow(modelName, fs, config,
                     comm, threadNum, needPyTransform, pyTransformScript);
             dataFlow.init();
             dataFlow.loadFlow(trainDatas, testDatas);
             dataFlow.ready();
             long beforeTrainCost = System.currentTimeMillis() - start;
 
-            ITrainOperation trainOperation = TrainOperationFactory.createTrainOperation(modelName);
+            final ITrainOperation trainOperation = TrainOperationFactory.createTrainOperation(modelName);
 
             final ThreadCommSlave finalComm = comm;
 
